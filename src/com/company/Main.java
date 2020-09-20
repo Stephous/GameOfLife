@@ -13,7 +13,7 @@ public class Main extends JPanel {
 
     private final int width,height;
 
-    private final boolean[][] Grid;
+    private boolean[][] Grid;
 
     public Main(int width, int height,int n)
     {
@@ -85,7 +85,30 @@ public class Main extends JPanel {
 
     private void update ()
     {
+        boolean[][] newGrid = new boolean[width][height];
 
+        for( int x = 0; x < width ; x++)
+        {
+            for( int y = 0; y < height ; y++)
+            {
+                int count = 0;
+
+                for (int xo = -1; xo < 2 ; xo++)
+                {
+                    for (int yo = -1; yo < 2 ; yo++)
+                    {
+                        if (xo == 0 && yo ==0) continue;
+                        int nx = x+ xo;
+                        int ny = y+ yo;
+                        count += (nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]) ? 1 : 0;
+                    }
+
+                }
+                newGrid[x][y] = Grid[x][y] ? (count == 2 || count == 3) : count == 3;
+
+            }
+        }
+        Grid = newGrid;
     }
 
     protected void paintComponent (Graphics g){
@@ -112,6 +135,6 @@ public class Main extends JPanel {
 
     public static void main(String[] args)
     {
-        new Main(128,72,100);
+        new Main(128,72,1000);
     }
 }

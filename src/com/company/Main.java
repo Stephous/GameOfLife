@@ -104,7 +104,10 @@ public class Main extends JPanel {
                     }
 
                 }
-                newGrid[x][y] = Grid[x][y] ? (count == 2 || count == 3) : count == 3;
+                // Jeu de la vie classique :
+                // newGrid[x][y] = Grid[x][y] ? (count == 2 || count == 3) : count == 3;
+                // Jeu de la vie jour et nuit :
+                newGrid[x][y] = Grid[x][y] ? (count == 3 || count == 4 || count == 6 || count == 7 | count == 8) : ( count == 3 || count == 6 || count == 7 || count == 8);
 
             }
         }
@@ -135,6 +138,6 @@ public class Main extends JPanel {
 
     public static void main(String[] args)
     {
-        new Main(128,72,1000);
+        new Main(128,72,2000);
     }
 }

@@ -2,23 +2,25 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Main extends JPanel {
+public class Main extends JPanel { // initialisation variables globale
 
     private final JFrame frame;
 
     private final int width,height;
 
 
-    private int gamechoose=1;
+    private int gamechoose;
 
     private boolean[][] Grid;
 
-    public Main(int width, int height,int n){
+    public Main(int width, int height,int n){ // génération de la grille de jeu, de l'affichage du jeu et appels des fonctions
 
         this.width = width;
         this.height = height;
@@ -26,11 +28,13 @@ public class Main extends JPanel {
 
         generateRandomAlive(n);
 
+        getGamechoose();
+
+
         frame = new JFrame("Game oF Life");
         frame.setSize(1280,720);
         frame.setUndecorated(true);
         frame.setResizable(true);
-
 
         frame.setLocationRelativeTo(null);
 
@@ -43,6 +47,18 @@ public class Main extends JPanel {
         run();
     }
 
+    private void getGamechoose(){ // Sélection du jeu dans la console
+        System.out.println("Saisir 0 Pour le jeu classique et 1 pour le jeu Jour & Nuit");
+        try {
+            String readConsole = (String.valueOf(System.in.read()));
+            gamechoose=Integer.parseInt(readConsole)-48;
+        } catch (IOException e) {
+            gamechoose=0;
+        }
+
+        if (gamechoose > 1) gamechoose = 1;
+        else if(gamechoose <0) gamechoose = 0;
+    }
     private void generateRandomAlive(int nbCell){ // Initialise aléatoirement des cellules vivantes dans le tableau
         Random rand = new Random();
 
@@ -62,7 +78,7 @@ public class Main extends JPanel {
         }
     }
 
-    private void run (){
+    private void run (){ // actualisation du jeu en fonction tu temps réel
 
         long nanoSecond = System.nanoTime();
         double tick = 1000000000.0/40.0;
@@ -90,7 +106,7 @@ public class Main extends JPanel {
         }
     }
 
-    private void update (){
+    private void update (){ // Mise à jour de la grille en suivant les règles du jeu de la vie choisi
         boolean[][] newGrid = new boolean[width][height];
 
         for( int x = 0; x < width ; x++)
@@ -124,7 +140,7 @@ public class Main extends JPanel {
         Grid = newGrid;
     }
 
-    protected void paintComponent (Graphics g){
+    protected void paintComponent (Graphics g){ // rend visible les cellules vivantes dans la grille
 
         int xOffset = 1280 / width;
         int yOffset = 720 / height;
@@ -146,7 +162,7 @@ public class Main extends JPanel {
 
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) // Génération de la taille des cases et du nombre de cases vivantes dans l'initialisation
     {
         new Main(128,72,5000);
     }

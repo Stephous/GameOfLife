@@ -18,17 +18,17 @@ public class Main extends JPanel { // initialisation variables globale
 
     private int gamechoose;
 
-    private boolean[][] Grid;
+    private int[][] Grid;
 
     public Main(int width, int height,int n){ // génération de la grille de jeu, de l'affichage du jeu et appels des fonctions
 
         this.width = width;
         this.height = height;
-        Grid = new boolean[width][height];
+        Grid = new int[width][height];
 
-        generateRandomAlive(n);
 
         getGamechoose();
+        generateRandomAlive(n);
 
 
         frame = new JFrame("Game oF Life");
@@ -48,7 +48,7 @@ public class Main extends JPanel { // initialisation variables globale
     }
 
     private void getGamechoose(){ // Sélection du jeu dans la console
-        System.out.println("Saisir 0 Pour le jeu classique et 1 pour le jeu Jour & Nuit");
+        System.out.println("Saisir 0 Pour le jeu classique, 1 pour le jeu Jour & Nuit et 2 pour le jeu QuadLife");
         try {
             String readConsole = (String.valueOf(System.in.read()));
             gamechoose=Integer.parseInt(readConsole)-48;
@@ -56,27 +56,33 @@ public class Main extends JPanel { // initialisation variables globale
             gamechoose=0;
         }
 
-        if (gamechoose > 1) gamechoose = 1;
+        if (gamechoose > 2) gamechoose = 2;
         else if(gamechoose <0) gamechoose = 0;
     }
-    private void generateRandomAlive(int nbCell){ // Initialise aléatoirement des cellules vivantes dans le tableau
+    private void generateRandomAlive(int nbCell){ // Initialise aléatoirement des cellules vivantes avec leur etat aléatoire dans le tableau
         Random rand = new Random();
-
+        int Etatcellule = 1;
         List<String> cantPlace = new ArrayList<>();
 
-        while ( nbCell > 0){
+        while ( nbCell > 0) {
+            if (gamechoose ==2) {
+                Etatcellule=rand.nextInt(4)+1;
+            }
             int randx = rand.nextInt(width);
             int randy = rand.nextInt(height);
 
-            if(cantPlace.contains(randx+"-"+randy)) continue;
+            if (cantPlace.contains(randx + "-" + randy)) continue;
 
-            cantPlace.add(randx+"-"+randy);
+            cantPlace.add(randx + "-" + randy);
 
-            Grid[randx][randy] = true;
+            Grid[randx][randy] = Etatcellule;
 
             nbCell--;
+
         }
     }
+
+
 
     private void run (){ // actualisation du jeu en fonction tu temps réel
 
@@ -107,7 +113,7 @@ public class Main extends JPanel { // initialisation variables globale
     }
 
     private void update (){ // Mise à jour de la grille en suivant les règles du jeu de la vie choisi
-        boolean[][] newGrid = new boolean[width][height];
+        int[][] newGrid = new int[width][height];
 
         for( int x = 0; x < width ; x++)
         {
@@ -122,17 +128,22 @@ public class Main extends JPanel { // initialisation variables globale
                         if (xvoisin == 0 && yvoisin ==0) continue;
                         int nx = x+ xvoisin;
                         int ny = y+ yvoisin;
-                        count += (nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]) ? 1 : 0;
+                        count += (nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]==1) ? 1 : 0;
                     }
 
                 }
                 // Jeu de la vie classique :
                 if(gamechoose==0){
-                    newGrid[x][y] = Grid[x][y] ? (count == 2 || count == 3) : count == 3;
+                    newGrid[x][y] = Grid[x][y]==1 ? (count == 2 || count == 3)?1:0 : (count == 3)?1:0;
                 }
                 // Jeu de la vie jour et nuit :
                 else if (gamechoose==1){
-                    newGrid[x][y] = Grid[x][y] ? (count == 3 || count == 4 || count == 6 || count == 7 | count == 8) : ( count == 3 || count == 6 || count == 7 || count == 8);
+                    newGrid[x][y] = Grid[x][y]==1 ? (count == 3 || count == 4 || count == 6 || count == 7 | count == 8)?1:0 : ( count == 3 || count == 6 || count == 7 || count == 8)?1:0;
+                }
+                // Jeu de la vie QuadLife :
+                else if (gamechoose==2){
+                    newGrid[x][y] = Grid[x][y]==1 ? (count == 2 || count == 3)?1:0 :
+                            ( count == 3 )?1:0;
                 }
 
             }
@@ -145,16 +156,27 @@ public class Main extends JPanel { // initialisation variables globale
         int xOffset = 1280 / width;
         int yOffset = 720 / height;
 
-
-        g.setColor(Color.GRAY);
-
         for (int x=0;x<width;x++){
 
             for (int y=0;y<height;y++){
-
-                if (Grid[x][y]){
-
-                    g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
+                switch (Grid[x][y]){
+                    case 1:
+                        g.setColor(Color.RED);
+                        g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
+                        break;
+                    case 2:
+                        g.setColor(Color.ORANGE);
+                        g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
+                        System.out.println("cas ORANGE");
+                        break;
+                    case 3:
+                        g.setColor(Color.yellow);
+                        g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
+                        break;
+                    case 4:
+                        g.setColor(Color.GREEN);
+                        g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
+                        break;
                 }
             }
         }

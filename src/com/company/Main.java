@@ -28,6 +28,8 @@ public class Main extends JPanel { // initialisation variables globale
 
 
         getGamechoose();
+
+
         generateRandomAlive(n);
 
 
@@ -68,8 +70,8 @@ public class Main extends JPanel { // initialisation variables globale
             if (gamechoose ==2) {
                 Etatcellule=rand.nextInt(4)+1;
             }
-            int randx = rand.nextInt(width);
-            int randy = rand.nextInt(height);
+            int randx = rand.nextInt(width-2)+1;
+            int randy = rand.nextInt(height-2)+1;
 
             if (cantPlace.contains(randx + "-" + randy)) continue;
 
@@ -87,7 +89,7 @@ public class Main extends JPanel { // initialisation variables globale
     private void run (){ // actualisation du jeu en fonction tu temps réel
 
         long nanoSecond = System.nanoTime();
-        double tick = 1000000000.0/40.0;
+        double tick = 1000000000.0/50.0000;
         int tps=0,fps=0;
         long lastTime = System.currentTimeMillis();
 
@@ -115,11 +117,12 @@ public class Main extends JPanel { // initialisation variables globale
     private void update (){ // Mise à jour de la grille en suivant les règles du jeu de la vie choisi
         int[][] newGrid = new int[width][height];
 
-        for( int x = 0; x < width ; x++)
+        for( int x = 1; x < width-2 ; x++)
         {
-            for( int y = 0; y < height ; y++)
+            for( int y = 1; y < height-2 ; y++)
             {
                 int count = 0;
+                List<Integer> ListEtatvoisin = new ArrayList<Integer>();
 
                 for (int xvoisin = -1; xvoisin < 2 ; xvoisin++)
                 {
@@ -128,7 +131,13 @@ public class Main extends JPanel { // initialisation variables globale
                         if (xvoisin == 0 && yvoisin ==0) continue;
                         int nx = x+ xvoisin;
                         int ny = y+ yvoisin;
-                        count += (nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]==1) ? 1 : 0;
+                        if(nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]>=1){
+                            count++;
+                            if (gamechoose==2){
+                                ListEtatvoisin.add(Grid[nx][ny]);
+                            }
+                        }
+
                     }
 
                 }
@@ -142,8 +151,45 @@ public class Main extends JPanel { // initialisation variables globale
                 }
                 // Jeu de la vie QuadLife :
                 else if (gamechoose==2){
-                    newGrid[x][y] = Grid[x][y]==1 ? (count == 2 || count == 3)?1:0 :
-                            ( count == 3 )?1:0;
+                    if(Grid[x][y]>=1){
+                        newGrid[x][y] = (count == 2 || count == 3)?Grid[x][y]:0;
+                    }
+                    else if (count == 3){
+                        int voisin1 = ListEtatvoisin.get(0);
+                        int voisin2 = ListEtatvoisin.get(1);
+                        int voisin3 = ListEtatvoisin.get(2);
+
+                        if(voisin1 == voisin2 || voisin1 == voisin3 || voisin2 == voisin3){
+                            int Majority;
+                            if(voisin1==voisin2){
+                                Majority = voisin1;
+                            }
+                            else{
+                                Majority = voisin3;
+                            }
+                            newGrid[x][y]=Majority;
+                        }
+                        else{
+                            if(voisin1 !=4 && voisin2 != 4 && voisin3 != 4){
+                                newGrid[x][y]=4;
+                            }
+                            else if(voisin1 !=3 && voisin2 != 3 && voisin3 != 3){
+                                newGrid[x][y]=3;
+                            }
+                            else if(voisin1 !=2 && voisin2 != 2 && voisin3 != 2){
+                                newGrid[x][y]=2;
+                            }
+                            else {
+                                newGrid[x][y]=1;
+                            }
+
+                        }
+
+
+                    }else{
+                        newGrid[x][y]=0;
+                    }
+
                 }
 
             }
@@ -165,16 +211,15 @@ public class Main extends JPanel { // initialisation variables globale
                         g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
                         break;
                     case 2:
-                        g.setColor(Color.ORANGE);
+                        g.setColor(Color.YELLOW);
                         g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
-                        System.out.println("cas ORANGE");
                         break;
                     case 3:
-                        g.setColor(Color.yellow);
+                        g.setColor(Color.GREEN);
                         g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
                         break;
                     case 4:
-                        g.setColor(Color.GREEN);
+                        g.setColor(Color.cyan);
                         g.fillRect(x*xOffset,y*yOffset,xOffset,yOffset);
                         break;
                 }

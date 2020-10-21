@@ -1,4 +1,4 @@
-package com.company;
+package com.company.Initialisation;
 
 import java.io.IOException;
 
@@ -20,5 +20,4 @@ public class GetGameChoose {
         return gamechoose;
 
     }
-
 }

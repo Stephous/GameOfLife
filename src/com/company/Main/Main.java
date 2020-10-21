@@ -1,8 +1,11 @@
-package com.company;
+package com.company.Main;
+
+import com.company.Initialisation.GetGameChoose;
+import com.company.Actualisation.UpdateClass;
+import com.company.Initialisation.generateRandomAlive;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class Main extends JPanel {
 
@@ -30,6 +33,7 @@ public class Main extends JPanel {
         frame.setBackground(Color.black);
         frame.setVisible(true);
         run();
+        frame.dispose();
     }
 
     private void run (){
@@ -37,14 +41,16 @@ public class Main extends JPanel {
         long nanoSecond = System.nanoTime();
         double tick = 1000000000.0/50.0000;
         int tps=0,fps=0;
+        int numberloop=2500;
         long lastTime = System.currentTimeMillis();
 
-        while (true){
+        while (numberloop>0){
             if(System.nanoTime() - nanoSecond > tick){
                 nanoSecond+=tick;
                 tps++;
-                Grid = RunAPP.update(width,height,gamechoose,Grid);
+                Grid = UpdateClass.update(width,height,gamechoose,Grid);
                 //update();
+                numberloop--;
             }
             else
             {
@@ -95,6 +101,8 @@ public class Main extends JPanel {
 
     public static void main(String[] args)
     {
-        new Main(128,72,5000);
+            new Main(128,72,2500);
+            //new Main(256,144,5000);
+            //new Main(640,360,25000);
     }
 }

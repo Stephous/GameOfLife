@@ -1,9 +1,11 @@
-package com.company;
+package com.company.Actualisation;
 
-import javax.swing.*;
+import com.company.Actualisation.CheckNeighbourState;
+import com.company.Actualisation.GenerateNewState;
+
 import java.util.List;
 
-public class RunAPP {
+public class UpdateClass {
     public static int[][] update(int width, int height, int gamechoose, int[][] Grid) {
         int[][] newGrid = new int[width][height];
 

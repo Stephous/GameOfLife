@@ -9,9 +9,9 @@ public class UpdateClass {
     public static int[][] update(int width, int height, int gamechoose, int[][] Grid) {
         int[][] newGrid = new int[width][height];
 
-        for( int x = 1; x < width-2 ; x++)
+        for( int x = 1; x < width-1 ; x++)
         {
-            for( int y = 1; y < height-2 ; y++)
+            for( int y = 1; y < height-1 ; y++)
             {
                 int count = 0;
 

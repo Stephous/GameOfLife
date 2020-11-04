@@ -15,7 +15,7 @@ public class CheckNeighbourState {
                 if (xvoisin == 0 && yvoisin ==0) continue;
                 int nx = x+ xvoisin;
                 int ny = y+ yvoisin;
-                if(nx >=0 && ny > 0 && nx < width && ny < height && Grid[nx][ny]>=1){
+                if(Grid[nx][ny]>=1){
                     count++;
                     if (gamechoose==2){
                         ListEtatvoisin.add(Grid[nx][ny]);

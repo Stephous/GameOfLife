@@ -7,16 +7,17 @@ import java.util.Random;
 public class generateRandomAlive {
 
 
-    public static int[][] Randomizers(int n, int game, int width, int height, int[][] Grid){
+    public static int[][] Randomizers(int numrandCells, int game, int width, int height, int[][] Grid){
         Random rand = new Random();
         int Cellstate = 1;
-        int nbCell = n;
+        int nbCell = numrandCells;
         List<String> cantPlace = new ArrayList<>();
 
         while ( nbCell > 0) {
             if (game ==2) {
                 Cellstate=rand.nextInt(4)+1;
             }
+
             int randx = rand.nextInt(width-2)+1;
             int randy = rand.nextInt(height-2)+1;
 

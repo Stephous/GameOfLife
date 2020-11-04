@@ -26,7 +26,7 @@ public class UpdateClass {
                 ReturnCount = Return.get(1);
                 count = ReturnCount.get(0);
 
-                newGrid[x][y] = GenerateNewState.Genetator(x,y,gamechoose,count,Grid,ListEtatvoisin);
+                newGrid[x][y] = GenerateNewState.Generator(x,y,gamechoose,count,Grid,ListEtatvoisin);
             }
         }
         return newGrid;

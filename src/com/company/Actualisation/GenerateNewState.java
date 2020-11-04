@@ -5,7 +5,7 @@ import java.util.List;
 public class GenerateNewState {
 
 
-    public static int Genetator(int x, int y, int gamechoose, int count, int[][] Grid, List<Integer> ListEtatvoisin){
+    public static int Generator(int x, int y, int gamechoose, int count, int[][] Grid, List<Integer> ListEtatvoisin){
 
         int newGridReturn=0;
         // Jeu de la vie classique :

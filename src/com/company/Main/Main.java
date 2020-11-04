@@ -14,14 +14,14 @@ public class Main extends JPanel {
     private final int gamechoose;
     private int[][] Grid;
 
-    public Main(int width, int height,int n){
+    public Main(int width, int height,int numrandCells){
 
         this.width = width;
         this.height = height;
         Grid = new int[width][height];
 
         gamechoose = GetGameChoose.gamechooser();
-        Grid = generateRandomAlive.Randomizers(n, gamechoose, width, height, Grid);
+        Grid = generateRandomAlive.Randomizers(numrandCells, gamechoose, width, height, Grid);
 
 
         frame = new JFrame("Game oF Life");
@@ -101,8 +101,8 @@ public class Main extends JPanel {
 
     public static void main(String[] args)
     {
-            new Main(128,72,2500);
-            //new Main(256,144,5000);
-            //new Main(640,360,25000);
+        new Main(128,72,2500);
+        //new Main(256,144,5000);
+        //new Main(640,360,25000);
     }
 }
